@@ -46,7 +46,7 @@
         当      电动车有<malfunction>信号
         那么    面板上显示<malfunction icon>图标
         
-    例子： 故障信号与图标关系
+    例子: 故障信号与图标关系
         | malfunction   |   malfunction icon    |
         |   D6          |   霍尔故障             |
         |   D5          |   转把故障             |
