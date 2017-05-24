@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+'''
+bluetooth.py is step implementation file for bluetooth.feature
 
+'''
 import logging
 from time import sleep
 

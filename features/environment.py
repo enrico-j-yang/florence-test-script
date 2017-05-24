@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+'''
+environment.py is pre-process and post-process for all step implementation files
 
+'''
 import logging
 import platform
 import sys
@@ -26,6 +29,11 @@ class PlatformNotSupportedError(Exception):
 
 
 def before_all(context):
+    '''
+    Initial serial ports, test input, test result. Set mock_enable to True to enable mock mode.
+    :param context: behave global variable
+    :return: None
+    '''
     if platform.system() == 'Windows':
         try:
             context.control_board_serial_port = TestSerial(port='COM3',
@@ -138,25 +146,35 @@ def before_all(context):
 
 
 def after_all(context):
+    '''
+    Close all serial port after all feature done
+    :param context: behave global variable
+    :return: None
+    '''
     context.control_board_serial_port.close()
     context.bluetooth_serial_port.close()
     context.result_serial_port.close()
 
 
 def before_feature(context, feature):
+    '''
+    Initial control board e-bike mode and rated voltage
+    :param context: behave global variable
+    :param feature: behave feature name
+    :return: None
+    '''
     context.florenceTestInput.sysHIEvt.set_mode("GPIO")
 
     context.florenceTestInput.sysExtEvt.set_rated_voltage(48)
     context.florenceTestInput.sysExtEvt.set_mode("GPIO")
 
-
-def after_feature(context, feature):
-    context = context
-
-
-def before_scenario(context, scenario):
-    context = context
+# def after_feature(context, feature):
+#    context = context
 
 
-def after_scenario(context, scenario):
-    context = context
+# def before_scenario(context, scenario):
+#    context = context
+
+
+# def after_scenario(context, scenario):
+#    context = context

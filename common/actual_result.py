@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
+"""
+actual_result.py derives from test_result.py
+It defines actual result and bluetooth serials feedback 
 
+"""
 import logging
 import sys
 from time import sleep
@@ -14,19 +18,45 @@ class PlatformNotSupportedError(Exception):
 
 
 class ActualResult(TestResult):
+    """
+    ActualResult derives from TestResult
+    It implements mock result and actual result read from serial of result and bluetooth ports
+    It uses a dictionary to store actual results 
+    :static variable dist: test result dictionary
+    :static variable result_serial_port: result serial port handler
+    :static variable bluetooth_serial_port: bluetooth serial port handler
+    """
     result_serial_port = None
     bluetooth_serial_port = None
     dist = {}
 
     def __init__(self, result_serial_port, bluetooth_serial_port, mock_enable=False):
+        """
+        constructor of ActualResult
+        :param result_serial_port: result serial port handler
+        :param bluetooth_serial_port: bluetooth serial port handler
+        :param mock_enable: True for mock enable, otherwise disable
+        """
         super(ActualResult, self).__init__(mock_enable)
         self.result_serial_port = result_serial_port
         self.bluetooth_serial_port = bluetooth_serial_port
 
     def set_value(self, key, value):
+        """
+        set dictionary value according to specified key
+        :param key: actual result dictionary key
+        :param value: actual result dictionary value
+        :return: None
+        """
         self.dist[key] = value
 
     def mock_value(self, key, value):
+        """
+        set dictionary value according to specified key if mock is enabled
+        :param key: actual result dictionary key
+        :param value: actual result dictionary value
+        :return: None
+        """
         if self.mock_enable:
             if key == 'BluetoothSerial':
                 logging.debug("if key == 'BluetoothSerial':")
@@ -36,6 +66,11 @@ class ActualResult(TestResult):
                 self.set_value(key, value)
 
     def get_value(self, key):
+        """
+        get dictionary value according to specified key
+        :param key:  actual result dictionary key
+        :return: actual result dictionary value
+        """
         # read test command to serial port
         if key == 'BluetoothSerial':
             self.dist[key] = self._get_bluetooth_value()
@@ -63,6 +98,10 @@ class ActualResult(TestResult):
         return self.dist[key]
 
     def _get_bluetooth_value(self):
+        """
+        get dictionary value value according to bluetooth specified key
+        :return: actual result of bluetooth dictionary value
+        """
         # read test command to serial port
         out_bytes = ''
         # let's wait one second before reading output (let's give device time to answer)

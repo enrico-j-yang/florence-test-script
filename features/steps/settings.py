@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+'''
+setting.py is step implementation file for setting.feature
 
+'''
 import logging
 
 
@@ -29,7 +32,7 @@ def step_impl(context, press_type, times, button):
             assert 0
 
         context.florenceTestInput.sysHIEvt.set_signal_period(0)
-        context.florenceTestInput.sysHIEvt.start_commit_signal()
+        context.florenceTestInput.sysHIEvt.start_generate_signal()
 
 
 @when(u'用户{press_type}按{button}键')
@@ -51,7 +54,7 @@ def step_impl(context, press_type, button):
         assert 0
 
     context.florenceTestInput.sysHIEvt.set_signal_period(0)
-    context.florenceTestInput.sysHIEvt.start_commit_signal()
+    context.florenceTestInput.sysHIEvt.start_generate_signal()
 
 
 @then(u'面板进入系统设置')
@@ -486,6 +489,7 @@ def step_impl(context):
     logging.debug("context.florenceActRes.SystemLanguage: " + str(context.florenceActRes.dist['SystemLanguage']))
     assert context.florenceActRes.dist['SystemLanguage'] == context.florenceExpRes.dist['SystemLanguage']
 
+
 @then(u'面板显示蓝牙从已连接变为未连接')
 def step_impl(context):
     context.florenceExpRes.set_value('BluetoothSerial', 'AT#DD')
@@ -501,4 +505,3 @@ def step_impl(context):
     logging.debug("context.florenceExpRes.Bluetooth: " + str(context.florenceExpRes.dist['Bluetooth']))
     logging.debug("context.florenceActRes.Bluetooth: " + str(context.florenceActRes.dist['Bluetooth']))
     assert context.florenceActRes.dist['Bluetooth'] == context.florenceExpRes.dist['Bluetooth']
-

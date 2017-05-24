@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+'''
+driving_info.py is step implementation file for driving_info.feature
 
+'''
 import logging
 from time import sleep
 
@@ -9,7 +12,7 @@ def step_impl(context, speed):
     logging.debug("speed: " + speed)
     context.florenceTestInput.sysExtEvt.speed = speed
     context.florenceTestInput.sysExtEvt.send('Speed=' + speed)
-    context.florenceTestInput.sysExtEvt.start_commit_signal()
+    context.florenceTestInput.sysExtEvt.start_generate_signal()
 
 
 @then(u'面板上显示车速为{speed}km/h')
@@ -35,7 +38,7 @@ def step_impl(context, duration, init_speed, end_speed):
         logging.debug("speed:" + str(speed))
         context.florenceTestInput.sysExtEvt.send('Speed=' + str(speed))
         context.florenceTestInput.sysExtEvt.set_signal_period(300)
-        context.florenceTestInput.sysExtEvt.start_commit_signal()
+        context.florenceTestInput.sysExtEvt.start_generate_signal()
         sleep(0.3)
         eclipse_time = eclipse_time + 300
 
@@ -66,7 +69,7 @@ def step_impl(context, duration, init_speed, end_speed):
         speed = int(init_speed) + (int(end_speed) - int(init_speed)) * eclipse_time / (int(duration) * 1000)
         context.florenceTestInput.sysExtEvt.send('Speed=' + str(speed))
         context.florenceTestInput.sysExtEvt.set_signal_period(300)
-        context.florenceTestInput.sysExtEvt.start_commit_signal()
+        context.florenceTestInput.sysExtEvt.start_generate_signal()
         sleep(0.3)
         eclipse_time = eclipse_time + 300
 
@@ -99,7 +102,7 @@ def step_impl(context):
 def step_impl(context):
     context.florenceTestInput.sysExtEvt.send('CruiserMode=On')
     context.florenceTestInput.sysExtEvt.set_signal_period(0)
-    context.florenceTestInput.sysExtEvt.start_commit_signal()
+    context.florenceTestInput.sysExtEvt.start_generate_signal()
 
 
 @then(u'面板上显示定速车速为{speed}km/h')
@@ -139,7 +142,7 @@ def step_impl(context, duration):
     while eclipse_time < (int(duration) * 1000):
         context.florenceTestInput.sysExtEvt.send('Speed=' + str(context.florenceTestInput.sysExtEvt.speed))
         context.florenceTestInput.sysExtEvt.set_signal_period(300)
-        context.florenceTestInput.sysExtEvt.start_commit_signal()
+        context.florenceTestInput.sysExtEvt.start_generate_signal()
         sleep(0.3)
         eclipse_time = eclipse_time + 300
 
@@ -180,7 +183,7 @@ def step_impl(context):
 def step_impl(context, volt_percentage):
     context.florenceTestInput.sysExtEvt.send('Volt=' + volt_percentage)
     context.florenceTestInput.sysExtEvt.set_signal_period(300)
-    context.florenceTestInput.sysExtEvt.start_commit_signal()
+    context.florenceTestInput.sysExtEvt.start_generate_signal()
 
 
 @then(u'面板上显示电量为{volt_percentage}%')
@@ -217,7 +220,7 @@ def step_impl(context, range_in_meter):
 def step_impl(context):
     context.florenceTestInput.sysExtEvt.send('Status=Park')
     context.florenceTestInput.sysExtEvt.set_signal_period(300)
-    context.florenceTestInput.sysExtEvt.start_commit_signal()
+    context.florenceTestInput.sysExtEvt.start_generate_signal()
 
 
 @then(u'面板上显示状态为驻车档')
@@ -234,7 +237,7 @@ def step_impl(context):
 def step_impl(context):
     context.florenceTestInput.sysExtEvt.send('Status=Ready')
     context.florenceTestInput.sysExtEvt.set_signal_period(300)
-    context.florenceTestInput.sysExtEvt.start_commit_signal()
+    context.florenceTestInput.sysExtEvt.start_generate_signal()
 
 
 @then(u'面板上显示状态为可运行')
@@ -251,7 +254,7 @@ def step_impl(context):
 def step_impl(context):
     context.florenceTestInput.sysExtEvt.send('Gear=Low')
     context.florenceTestInput.sysExtEvt.set_signal_period(300)
-    context.florenceTestInput.sysExtEvt.start_commit_signal()
+    context.florenceTestInput.sysExtEvt.start_generate_signal()
 
 
 @then(u'面板上显示档位为低速')
@@ -268,7 +271,7 @@ def step_impl(context):
 def step_impl(context):
     context.florenceTestInput.sysExtEvt.send('Gear=Medium')
     context.florenceTestInput.sysExtEvt.set_signal_period(300)
-    context.florenceTestInput.sysExtEvt.start_commit_signal()
+    context.florenceTestInput.sysExtEvt.start_generate_signal()
 
 
 @then(u'面板上显示档位为中速')
@@ -285,7 +288,7 @@ def step_impl(context):
 def step_impl(context):
     context.florenceTestInput.sysExtEvt.send('Gear=High')
     context.florenceTestInput.sysExtEvt.set_signal_period(300)
-    context.florenceTestInput.sysExtEvt.start_commit_signal()
+    context.florenceTestInput.sysExtEvt.start_generate_signal()
 
 
 @then(u'面板上显示档位为高速')
@@ -302,7 +305,7 @@ def step_impl(context):
 def step_impl(context):
     context.florenceTestInput.sysExtEvt.send('Gear=None')
     context.florenceTestInput.sysExtEvt.set_signal_period(300)
-    context.florenceTestInput.sysExtEvt.start_commit_signal()
+    context.florenceTestInput.sysExtEvt.start_generate_signal()
 
 
 @then(u'面板上不显示档位')

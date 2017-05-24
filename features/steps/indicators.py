@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+'''
+indicators.py is step implementation file for indicators.feature
 
+'''
 import logging
 from time import sleep
 
@@ -8,7 +11,7 @@ from time import sleep
 def step_impl(context):
     context.florenceTestInput.sysExtEvt.send('Beam=High')
     context.florenceTestInput.sysExtEvt.set_signal_period(300)
-    context.florenceTestInput.sysExtEvt.start_commit_signal()
+    context.florenceTestInput.sysExtEvt.start_generate_signal()
 
 
 @then(u'面板上显示远光灯图标')
@@ -25,7 +28,7 @@ def step_impl(context):
 def step_impl(context):
     context.florenceTestInput.sysExtEvt.send('Beam=Low')
     context.florenceTestInput.sysExtEvt.set_signal_period(300)
-    context.florenceTestInput.sysExtEvt.start_commit_signal()
+    context.florenceTestInput.sysExtEvt.start_generate_signal()
 
 
 @then(u'面板上显示近光灯图标')
@@ -42,7 +45,7 @@ def step_impl(context):
 def step_impl(context):
     context.florenceTestInput.sysExtEvt.send('Beam=None')
     context.florenceTestInput.sysExtEvt.set_signal_period(300)
-    context.florenceTestInput.sysExtEvt.start_commit_signal()
+    context.florenceTestInput.sysExtEvt.start_generate_signal()
 
 
 @then(u'面板上不显示远近光灯图标')
@@ -59,7 +62,7 @@ def step_impl(context):
 def step_impl(context):
     context.florenceTestInput.sysExtEvt.send('TurnSignalLamp=Left')
     context.florenceTestInput.sysExtEvt.set_signal_period(300)
-    context.florenceTestInput.sysExtEvt.start_commit_signal()
+    context.florenceTestInput.sysExtEvt.start_generate_signal()
 
 
 @then(u'面板上显示左转灯图标')
@@ -76,7 +79,7 @@ def step_impl(context):
 def step_impl(context):
     context.florenceTestInput.sysExtEvt.send('TurnSignalLamp=Right')
     context.florenceTestInput.sysExtEvt.set_signal_period(300)
-    context.florenceTestInput.sysExtEvt.start_commit_signal()
+    context.florenceTestInput.sysExtEvt.start_generate_signal()
 
 
 @then(u'面板上显示右转灯图标')
@@ -98,7 +101,7 @@ def step_impl(context):
 def step_impl(context):
     context.florenceTestInput.sysExtEvt.send('TurnSignalLamp=None')
     context.florenceTestInput.sysExtEvt.set_signal_period(300)
-    context.florenceTestInput.sysExtEvt.start_commit_signal()
+    context.florenceTestInput.sysExtEvt.start_generate_signal()
 
 
 @given(u'面板上有蓝牙图标')
@@ -110,7 +113,7 @@ def step_impl(context):
 def step_impl(context):
     context.florenceTestInput.sysExtEvt.send('TurnSignalLamp=None')
     context.florenceTestInput.sysExtEvt.set_signal_period(300)
-    context.florenceTestInput.sysExtEvt.start_commit_signal()
+    context.florenceTestInput.sysExtEvt.start_generate_signal()
 
 
 @then(u'面板上显示蓝牙图标')
@@ -138,7 +141,7 @@ def step_impl(context, malfunction):
         assert 0
 
     context.florenceTestInput.sysExtEvt.set_signal_period(300)
-    context.florenceTestInput.sysExtEvt.start_commit_signal()
+    context.florenceTestInput.sysExtEvt.start_generate_signal()
 
 
 @then(u'面板上显示{malfunction}图标')
