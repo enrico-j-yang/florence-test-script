@@ -2,12 +2,6 @@
 
 import logging
 
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-                    datefmt='%a, %d %b %Y %H:%M:%S',
-                    filename='florence_test.log',
-                    filemode='w')
-
 
 @given(u'面板蓝牙未连接')
 def step_impl(context):
@@ -19,45 +13,45 @@ def step_impl(context, press_type, times, button):
     loops = int(times)
     for i in range(1, loops):
         if press_type == u'短' and button == '+':
-            context.florenceTestInput.sysExtEvt.send('Button=ShortPlus')
+            context.florenceTestInput.sysHIEvt.send('Button=ShortPlus')
         elif press_type == u'短' and button == '-':
-            context.florenceTestInput.sysExtEvt.send('Button=ShortMinus')
+            context.florenceTestInput.sysHIEvt.send('Button=ShortMinus')
         elif press_type == u'短' and button == 'O':
-            context.florenceTestInput.sysExtEvt.send('Button=ShortOption')
+            context.florenceTestInput.sysHIEvt.send('Button=ShortOption')
         elif press_type == u'长' and button == '+':
-            context.florenceTestInput.sysExtEvt.send('Button=LongPlus')
+            context.florenceTestInput.sysHIEvt.send('Button=LongPlus')
         elif press_type == u'长' and button == '-':
-            context.florenceTestInput.sysExtEvt.send('Button=LongMinus')
+            context.florenceTestInput.sysHIEvt.send('Button=LongMinus')
         elif press_type == u'长' and button == 'O':
-            context.florenceTestInput.sysExtEvt.send('Button=LongOption')
+            context.florenceTestInput.sysHIEvt.send('Button=LongOption')
         else:
             logging.error("Unknown button pressing")
             assert 0
 
-        context.florenceTestInput.sysExtEvt.set_signal_period(0)
-        context.florenceTestInput.sysExtEvt.start_commit_signal()
+        context.florenceTestInput.sysHIEvt.set_signal_period(0)
+        context.florenceTestInput.sysHIEvt.start_commit_signal()
 
 
 @when(u'用户{press_type}按{button}键')
 def step_impl(context, press_type, button):
     if press_type == u'短' and button == '+':
-        context.florenceTestInput.sysExtEvt.send('Button=ShortPlus')
+        context.florenceTestInput.sysHIEvt.send('Button=ShortPlus')
     elif press_type == u'短' and button == '-':
-        context.florenceTestInput.sysExtEvt.send('Button=ShortMinus')
+        context.florenceTestInput.sysHIEvt.send('Button=ShortMinus')
     elif press_type == u'短' and button == 'O':
-        context.florenceTestInput.sysExtEvt.send('Button=ShortOption')
+        context.florenceTestInput.sysHIEvt.send('Button=ShortOption')
     elif press_type == u'长' and button == '+':
-        context.florenceTestInput.sysExtEvt.send('Button=LongPlus')
+        context.florenceTestInput.sysHIEvt.send('Button=LongPlus')
     elif press_type == u'长' and button == '-':
-        context.florenceTestInput.sysExtEvt.send('Button=LongMinus')
+        context.florenceTestInput.sysHIEvt.send('Button=LongMinus')
     elif press_type == u'长' and button == 'O':
-        context.florenceTestInput.sysExtEvt.send('Button=LongOption')
+        context.florenceTestInput.sysHIEvt.send('Button=LongOption')
     else:
         logging.error("Unknown button pressing")
         assert 0
 
-    context.florenceTestInput.sysExtEvt.set_signal_period(0)
-    context.florenceTestInput.sysExtEvt.start_commit_signal()
+    context.florenceTestInput.sysHIEvt.set_signal_period(0)
+    context.florenceTestInput.sysHIEvt.start_commit_signal()
 
 
 @then(u'面板进入系统设置')
@@ -92,11 +86,13 @@ def step_impl(context):
 
 @when(u'用户使用蓝牙设备连接电动车面板蓝牙')
 def step_impl(context):
-    raw_input("Please press enter")
+    context.florenceTestInput.sysHIEvt.mock_prompt("Please use cellphone connect e-bike bluetooth")
 
 
 @then(u'面板显示蓝牙正在连接')
 def step_impl(context):
+    context.florenceTestInput.sysIntEvt.mock_bluetooth_connecting()
+
     context.florenceExpRes.set_value('UIStatus', 'BluetoothConnecting')
     context.florenceActRes.mock_value('UIStatus', 'BluetoothConnecting')
     context.florenceActRes.get_value('UIStatus')
@@ -107,7 +103,7 @@ def step_impl(context):
 
 @given(u'面板蓝牙已连接')
 def step_impl(context):
-    context.florenceActRes.set_value('Bluetooth=', 'Connected')
+    context.florenceActRes.set_value('Bluetooth', 'Connected')
 
 
 @then(u'面板显示蓝牙已连接')
@@ -122,7 +118,8 @@ def step_impl(context):
 
 @when(u'用户的蓝牙设备已经连接上电动车面板蓝牙')
 def step_impl(context):
-    raw_input("Please press enter")
+    context.florenceTestInput.sysHIEvt.mock_prompt("bluetooth device connected to e-bike")
+    context.florenceTestInput.sysIntEvt.mock_bluetooth_connected()
 
 
 @then(u'面板显示为时间')
@@ -488,3 +485,20 @@ def step_impl(context):
     logging.debug("context.florenceExpRes.SystemLanguage: " + str(context.florenceExpRes.dist['SystemLanguage']))
     logging.debug("context.florenceActRes.SystemLanguage: " + str(context.florenceActRes.dist['SystemLanguage']))
     assert context.florenceActRes.dist['SystemLanguage'] == context.florenceExpRes.dist['SystemLanguage']
+
+@then(u'面板显示蓝牙从已连接变为未连接')
+def step_impl(context):
+    context.florenceExpRes.set_value('BluetoothSerial', 'AT#DD')
+    context.florenceActRes.mock_value('BluetoothSerial', 'AT#DD')
+    context.florenceActRes.get_value('BluetoothSerial')
+    logging.debug("context.florenceExpRes.BluetoothSerial: " + str(context.florenceExpRes.dist['BluetoothSerial']))
+    logging.debug("context.florenceActRes.BluetoothSerial: " + str(context.florenceActRes.dist['BluetoothSerial']))
+    assert context.florenceActRes.dist['BluetoothSerial'] == context.florenceExpRes.dist['BluetoothSerial']
+
+    context.florenceExpRes.set_value('Bluetooth', 'Disconnected')
+    context.florenceActRes.mock_value('Bluetooth', 'Disconnected')
+    context.florenceActRes.get_value('Bluetooth')
+    logging.debug("context.florenceExpRes.Bluetooth: " + str(context.florenceExpRes.dist['Bluetooth']))
+    logging.debug("context.florenceActRes.Bluetooth: " + str(context.florenceActRes.dist['Bluetooth']))
+    assert context.florenceActRes.dist['Bluetooth'] == context.florenceExpRes.dist['Bluetooth']
+

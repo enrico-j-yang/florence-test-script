@@ -3,15 +3,11 @@
 import logging
 from time import sleep
 
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-                    datefmt='%a, %d %b %Y %H:%M:%S',
-                    filename='florence_test.log',
-                    filemode='w')
-
 
 @when(u'电动车有车速信号为{speed}km/h')
 def step_impl(context, speed):
+    logging.debug("speed: " + speed)
+    context.florenceTestInput.sysExtEvt.speed = speed
     context.florenceTestInput.sysExtEvt.send('Speed=' + speed)
     context.florenceTestInput.sysExtEvt.start_commit_signal()
 
@@ -172,12 +168,12 @@ def step_impl(context, trip):
 
 @when(u'用户将电动车熄火')
 def step_impl(context):
-    raw_input("Please press enter")
+    context.florenceTestInput.sysHIEvt.mock_prompt("Please shutdown e-bike")
 
 
 @when(u'用户将电动车打火')
 def step_impl(context):
-    raw_input("Please press enter")
+    context.florenceTestInput.sysHIEvt.mock_prompt("Please launch e-bike")
 
 
 @when(u'电动车有电池电量为{volt_percentage}%')
@@ -197,10 +193,10 @@ def step_impl(context, volt_percentage):
     assert context.florenceActRes.dist['Volt'] == context.florenceExpRes.dist['Volt']
 
 
-@then(u'面板上显示可持续里程为{range}km')
-def step_impl(context, range):
-    context.florenceExpRes.set_value('Range', range)
-    context.florenceActRes.mock_value('Range', range)
+@then(u'面板上显示可持续里程为{available_range}km')
+def step_impl(context, available_range):
+    context.florenceExpRes.set_value('Range', available_range)
+    context.florenceActRes.mock_value('Range', available_range)
     context.florenceActRes.get_value('Range')
     logging.debug("context.florenceExpRes.Range: " + str(context.florenceExpRes.dist['Range']))
     logging.debug("context.florenceActRes.Range: " + str(context.florenceActRes.dist['Range']))

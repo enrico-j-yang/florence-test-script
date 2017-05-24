@@ -3,12 +3,6 @@
 import logging
 from time import sleep
 
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-                    datefmt='%a, %d %b %Y %H:%M:%S',
-                    filename='florence_test.log',
-                    filemode='w')
-
 
 @when(u'电动车有远光灯信号')
 def step_impl(context):
